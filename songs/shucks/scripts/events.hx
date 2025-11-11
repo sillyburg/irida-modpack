@@ -51,8 +51,18 @@ function postCreate() {
     doorVid.scrollFactor.set();
 
     add(lyricVid).load(Assets.getPath(Paths.file('videos/shucks-lyrics.mkv')));
-    lyricVid.scale.set(0.68,0.68);
-    lyricVid.setPosition(-317,-180);
+
+    lyricVid.bitmap.onFormatSetup.add(function():Void
+    {
+        if (lyricVid.bitmap != null && lyricVid.bitmap.bitmapData != null)
+        {
+            final scale:Float = Math.min(FlxG.width / lyricVid.bitmap.bitmapData.width, FlxG.height / lyricVid.bitmap.bitmapData.height);
+
+            lyricVid.setGraphicSize(lyricVid.bitmap.bitmapData.width * scale, lyricVid.bitmap.bitmapData.height * scale);
+            lyricVid.updateHitbox();
+            lyricVid.screenCenter();
+        }
+    });
     lyricVid.play();
     lyricVid.scrollFactor.set();
 
